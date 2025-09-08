@@ -36,6 +36,6 @@ RStudio is an IDE (Integrated Development Environment) that makes R easier to us
    2 + 2
    ```
 You should see :
-  ```r
-  [1] 4
-  ```
+   ```r
+   [1] 4
+   ```
