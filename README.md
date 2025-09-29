@@ -40,3 +40,5 @@ RStudio is an IDE (Integrated Development Environment) that makes R easier to us
    ```r
    [1] 4
    ```
+## 4. Introduction to GitHub
+Your first steps using GitHub! [Intro_to_GitHub.pdf](https://github.com/user-attachments/files/22593830/Intro_to_GitHub.pdf)
