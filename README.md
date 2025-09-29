@@ -4,7 +4,8 @@ Lecture Notes for the Data Analysis and Forecasting course
 # Class 1: Introduction to R and RStudio
 
 Welcome to the course! 🎓  
-In this first class, we’ll set up R and RStudio on your computer and run your first R script.
+In this first class, we’ll set up R and RStudio on your computer and run your first R script. Here you will also find all the materials related to the first class!
+Enjoy! 👨‍💻 / 👩‍💻
 
 ---
 
@@ -42,3 +43,7 @@ RStudio is an IDE (Integrated Development Environment) that makes R easier to us
    ```
 ## 4. Introduction to GitHub
 Your first steps using GitHub! [Intro_to_GitHub.pdf](https://github.com/user-attachments/files/22593830/Intro_to_GitHub.pdf)
+
+## 5. First class materials
+
+Introduction to R and RStudio [Intro_to_R.pdf](https://github.com/user-attachments/files/22598876/TA_Class1.pdf)
