@@ -46,5 +46,5 @@ Your first steps using GitHub! [Intro_to_GitHub.pdf](https://github.com/user-att
 
 ## 5. First class materials
 
-Introduction to R and RStudio [Intro_to_R.pdf](https://github.com/user-attachments/files/22615530/TA_Class1_Updated_30.09.pdf)
+Introduction to R and RStudio [Intro_to_R.pdf](https://github.com/user-attachments/files/22615848/TA_Class1_Update_30.09.pdf)
 
