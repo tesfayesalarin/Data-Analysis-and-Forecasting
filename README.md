@@ -48,3 +48,6 @@ Your first steps using GitHub! [Intro_to_GitHub.pdf](https://github.com/user-att
 
 Introduction to R and RStudio [Intro_to_R.pdf](https://github.com/user-attachments/files/22615848/TA_Class1_Update_30.09.pdf)
 
+# Class 2: Homework 2
+Please find another version of exercises 1 and 3 from Homework 2.
+
