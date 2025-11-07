@@ -1,0 +1,145 @@
+---
+title: "HW2"
+output: html_document
+date: "2025-11-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Install the required packages
+#install.packages("forecast", "fma", "ggplot2", "fpp3", "tidyverse")
+
+# Load the required libraries
+library(forecast)
+library(fma)
+library(fpp3)
+library(tidyverse)
+library(ggplot2)
+library(TSA)
+library(patchwork)
+```
+# Exercise 1 
+
+```{r}
+# Load the data
+data(hours)
+# Inspect the data
+hours
+# Plot the correlogram
+ggAcf(hours)
+```
+
+
+The correlogram shows large positive correlations at the first few lags that decline gradually, meaning consecutive months are highly related.
+
+When we look at the ACF (autocorrelation function), we’re measuring how similar each observation is to its past values. If one month’s average hours worked is strongly related to the previous few months, we’ll see high autocorrelation at small lags.
+In this case, there is evidence of autocorrelation, as the bars at lag 1, 2, 3, … are very high (around 0.75, 0.65, 0.55, …). This means that the average hours worked were high this month are very likely to be followed by high hours worked in the following month, and slightly less two or three months later.
+
+
+# Exercise 3
+```{r}
+#install.packages("fma")
+library(fma)
+
+#View dataset
+labour
+View(labour)
+
+#Transform to tsibble object
+labour_tsibble <- as_tsibble(labour)
+View(labour_tsibble)
+labour_tsibble
+```
+
+
+```{r}
+df <- autoplot(labour) # "autoplot" to see the Time Plot
+df
+```
+
+ 
+The time plot shows a strong upward trend in the Australian civilian labour force between 1978 and 1995. The time series increases smoothly over time, indicating non-stationarity in the mean. Short-term oscillations suggest some seasonal variation, but the dominant feature here is the long-run upward trend.
+
+```{r}
+ggseasonplot(labour) # to visualize seasonality 
+```
+
+
+The seasonal plot displays monthly patterns over the years. We can notice that, each year, lines shift upward. This suggests that, though the labour force grows each year, the seasonal shape is relatively stable (=simply meaning "consistent seasonality", a.k.a. months with systematically higher or lower civil labour force). For example, small **peaks** and **dips** repeat across years (see March and September), showing "mild" regular seasonal effects.
+
+```{r}
+ggsubseriesplot(labour)
+```
+
+
+The subseries plot shows how each month’s values evolve across years.
+Each panel (month) shows a gradual increase over time, confirming the trend.
+The within-month variability is low, suggesting that the overall variability of the series stays about the same over time.
+
+```{r}
+ggAcf(labour)
+```
+
+
+The autocorrelation function (ACF) shows very high positive correlations at short lags that decay slowly, confirming the presence of trend and persistence.
+There are no strong seasonal spikes, which means that the trend dominates the series’ behavior. Overall, the series is non-stationary due to the slow decay of the ACF.
+
+```{r}
+# Test Box Cox
+# Calculate lambda
+lambda <- labour_tsibble |>
+  features(value, features = guerrero) |>
+  pull(lambda_guerrero)
+lambda
+```
+
+
+In the initial graph, the labour series shows a clear upward trend from 1978 to 1995. However, the amplitude of fluctuations (= the “height” of ups and downs) appears fairly consistent across the entire range. That means the variance is roughly constant, so a Box–Cox transformation is not strongly needed based on visual inspection. From the plot, the variation/fluctuations remain fairly stable over time. Although the estimated λ = −0.8999 suggests some non-constant variance, the visual evidence indicates that a Box–Cox transformation is not essential.
+
+
+```{r}
+# Plot the two time series
+labour_boxcox <- labour_tsibble %>% 
+  mutate(lab_ts = box_cox(value, lambda=lambda))
+labour_boxcox
+```
+
+
+```{r}
+#Plot the Time Plots of the two time series
+autoplot(labour_boxcox, value)
+```
+
+```{r}
+autoplot(labour_boxcox, lab_ts)
+```
+
+Or, equivalently, :
+
+```{r}
+# Original series
+p1 <- autoplot(labour_boxcox, value) +
+  labs(title = "Original Labour Series", x = "Time", y = "Labour Force")
+
+# Box–Cox transformed series
+p2 <- autoplot(mutate(labour_tsibble, lab_ts = box_cox(value, lambda = lambda)), lab_ts) +
+  labs(title = "Box–Cox Transformed Series", x = "Time", y = "Transformed Labour Force")
+
+# Display one on top of the other
+p1 / p2
+```
+
+Or, if you want both time series in the same graph :
+```{r}
+autoplot(labour_boxcox, value) + autolayer(mutate(labour_boxcox, lab_ts = box_cox(value, lambda = lambda)), lab_ts, colour = "blue")
+```
+
+
+After applying the Box–Cox transformation using the Guerrero feature (λ = −0.8999), the transformed series looks very similar to the original one.
+The overall trend and the size of the fluctuations remain almost unchanged.
+This confirms my earlier conclusion that the variance in the original series was already quite stable, so the transformation does not have a strong visual effect and is not strictly necessary.
+
+
